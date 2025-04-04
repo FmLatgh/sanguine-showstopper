@@ -66,6 +66,29 @@ module.exports = {
       });
     }
 
+    // Function to handle rate limiting and retrying
+    async function handleRateLimitError(func) {
+      let retries = 5;
+      while (retries > 0) {
+        try {
+          await func();
+          return; // Exit if successful
+        } catch (error) {
+          if (error.message.includes("429")) {
+            console.log("Rate limited, retrying...");
+            await delay(5000); // Wait for 5 seconds before retrying (adjust as needed)
+            retries--;
+          } else {
+            throw error; // If it's not a rate limit error, throw the error
+          }
+        }
+      }
+      throw new Error("Exceeded maximum retries due to rate limiting.");
+    }
+
+    // Function to add delay between requests to avoid rate limits
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     // Fetch data from the sheet
     async function fetchData(oAuth2Client) {
       const sheets = google.sheets({ version: "v4", auth: oAuth2Client });
@@ -107,9 +130,6 @@ module.exports = {
           userData = [];
         }
 
-        // Function to add delay between requests to avoid rate limits
-        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
         for (let i = 0; i < formattedData.length; i++) {
           const username = formattedData[i];
 
@@ -119,54 +139,115 @@ module.exports = {
             continue;
           }
 
-          // Check if the username is already in the database
-          if (userData.some((user) => user.username === username)) {
-            alreadyAddedCount++;
-            continue;
-          }
+          let user = userData.find((user) => user.username === username);
 
-          try {
-            // Get the user ID from the username first
-            const userId = await noblox.getIdFromUsername(username.trim());
+          if (user) {
+            // If user exists and has missing group data, update it
+            const mainGroupId = process.env.MAINGROUP_ID
+              ? Number(process.env.MAINGROUP_ID)
+              : null;
+            const sanguineGroupId = process.env.SANGUINE_ID
+              ? Number(process.env.SANGUINE_ID)
+              : null;
 
-            // Now that we have the user ID, fetch user info
-            const player = await noblox.getUserInfo(userId);
+            const userGroups = await noblox.getGroups(
+              await noblox.getIdFromUsername(username.trim())
+            );
 
-            // If player is found, add them to the user data
-            const newUser = {
-              username: player.username,
-              displayName: player.displayName,
-              groupStatus: "Sanguine and Sanguophage", // You can update this based on your data
-              rank: "Member", // Update rank logic
-              attendedEvents: 0, // Update based on your needs
-            };
+            const mainGroup = userGroups.find((g) => g.Id === mainGroupId);
+            const sanguineGroup = userGroups.find(
+              (g) => g.Id === sanguineGroupId
+            );
 
-            userData.push(newUser);
-            addedCount++;
-
-            // Add delay between requests to avoid hitting rate limits
-            await delay(500); // Delay for 500ms (adjust as needed)
-
-            // Update progress after every 10th user for better feedback
-            if (i % 10 === 0 || i === totalCount - 1) {
-              await interaction.editReply({
-                content: `Scraping in progress... Scraped ${
-                  i + 1
-                } out of ${totalCount} users.`,
-              });
+            // Ensure groups are defined before updating the user data
+            if (mainGroup && !user.mainGroup) {
+              user.mainGroup = { name: mainGroup.Name, role: mainGroup.Role };
             }
-          } catch (error) {
-            // Handle error if user is not found or another issue occurs
-            if (error.message.includes("NotFound")) {
-              console.log(`User not found: ${username}`);
-              notAddedCount++;
-            } else {
+            if (sanguineGroup && !user.sanguineGroup) {
+              user.sanguineGroup = {
+                name: sanguineGroup.Name,
+                role: sanguineGroup.Role,
+              };
+            }
+
+            // Check if group status needs to be updated
+            if (sanguineGroup && mainGroup) {
+              user.groupStatus = "Sanguine and Sanguophage";
+            } else if (sanguineGroup) {
+              user.groupStatus = "Sanguine";
+            } else if (mainGroup) {
+              user.groupStatus = "Sanguophage";
+            }
+
+            // Mark as updated, don't add again
+            alreadyAddedCount++;
+          } else {
+            try {
+              // Retry fetching user data with rate limiting handling
+              await handleRateLimitError(async () => {
+                const userId = await noblox.getIdFromUsername(username.trim());
+
+                const player = await noblox.getUserInfo(userId);
+
+                const userGroups = await noblox.getGroups(userId);
+
+                const mainGroupId = process.env.MAINGROUP_ID
+                  ? Number(process.env.MAINGROUP_ID)
+                  : null;
+                const sanguineGroupId = process.env.SANGUINE_ID
+                  ? Number(process.env.SANGUINE_ID)
+                  : null;
+
+                const mainGroup = userGroups.find((g) => g.Id === mainGroupId);
+                const sanguineGroup = userGroups.find(
+                  (g) => g.Id === sanguineGroupId
+                );
+
+                let groupStatus = "";
+                if (sanguineGroup && mainGroup) {
+                  groupStatus = "Sanguine and Sanguophage";
+                } else if (sanguineGroup) {
+                  groupStatus = "Sanguine";
+                } else if (mainGroup) {
+                  groupStatus = "Sanguophage";
+                }
+
+                const newUser = {
+                  username: player.name,
+                  displayName: player.displayName,
+                  mainGroup: mainGroup
+                    ? { name: mainGroup.Name, role: mainGroup.Role }
+                    : null,
+                  sanguineGroup: sanguineGroup
+                    ? { name: sanguineGroup.Name, role: sanguineGroup.Role }
+                    : null,
+                  groupStatus, // Set the group status
+                  rank: "Member", // Update rank logic
+                  attendedEvents: 0, // Update based on your needs
+                };
+
+                userData.push(newUser);
+                addedCount++;
+              });
+            } catch (error) {
               console.error(
                 `Failed to retrieve data for user: ${username}`,
                 error
               );
               notAddedCount++;
             }
+          }
+
+          // Add delay between requests to avoid hitting rate limits
+          await delay(500); // Delay for 500ms (adjust as needed)
+
+          // Update progress after every 10th user for better feedback
+          if (i % 10 === 0 || i === totalCount - 1) {
+            await interaction.editReply({
+              content: `Scraping in progress... Scraped ${
+                i + 1
+              } out of ${totalCount} users.`,
+            });
           }
         }
 
