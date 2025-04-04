@@ -38,7 +38,9 @@ const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
       { body: commands }
     );
     console.log("Successfully reloaded guild-specific commands.");
-
+    // When registering commands
+    rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+    console.log("Successfully registered application commands.");
     // Remove outdated global commands
     console.log("Checking for outdated global commands...");
     const existingGlobalCommands = await rest.get(
@@ -74,6 +76,9 @@ const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
     console.error("Error refreshing application commands:", error);
   }
 })();
+
+rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
+console.log("Successfully registered context menu.");
 
 // Handle unhandled rejections and uncaught exceptions
 process.on("unhandledRejection", (reason, promise) => {
