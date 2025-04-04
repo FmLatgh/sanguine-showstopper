@@ -225,6 +225,15 @@
     "attendedEvents": 0
   },
   {
+    "username": "LocalThespian",
+    "displayName": "LocalThespian",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "MystOfSpades",
     "displayName": "MystOfSpades",
     "mainGroup": {
@@ -285,6 +294,15 @@
     "attendedEvents": 0
   },
   {
+    "username": "Villixo",
+    "displayName": "Villixo",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "Shoeske7",
     "displayName": "Sounding",
     "mainGroup": {
@@ -296,6 +314,18 @@
       "role": "♟ - Jester - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "jazyphoo2",
+    "displayName": "Not Jaz",
+    "mainGroup": null,
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Thrall of Sanguine - ♟"
+    },
+    "groupStatus": "Sanguine",
     "rank": "Member",
     "attendedEvents": 0
   },
@@ -540,6 +570,18 @@
     "attendedEvents": 0
   },
   {
+    "username": "Agent_Kiseleva",
+    "displayName": "Agent_Kiseleva",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♟Wayfarer♟"
+    },
+    "sanguineGroup": null,
+    "groupStatus": "Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "LadyOfTheSakura",
     "displayName": "StationaryEclipse",
     "mainGroup": {
@@ -584,7 +626,18 @@
     "rank": "Member",
     "attendedEvents": 0
   },
-
+  {
+    "username": "oso2201",
+    "displayName": "Mikoso",
+    "mainGroup": null,
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Thrall of Sanguine - ♟"
+    },
+    "groupStatus": "Sanguine",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
   {
     "username": "42951ms41r75297",
     "displayName": "The Curious",
@@ -648,6 +701,51 @@
   {
     "username": "hiimyoyoelm",
     "displayName": "wpelmirr",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♟Wayfarer♟"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Thrall of Sanguine - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "Vespirah",
+    "displayName": "Valynth",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♞Bloodline Bound♞"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Thrall of Sanguine - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "viniciusrafael6",
+    "displayName": "Clown",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♟Wayfarer♟"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Thrall of Sanguine - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "TheNotAlice",
+    "displayName": "mangoed",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♟Wayfarer♟"
@@ -1681,6 +1779,36 @@
     "attendedEvents": 0
   },
   {
+    "username": "CHISSSSOLO",
+    "displayName": "Antagonist",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♟Sycophant♟"
+    },
+    "sanguineGroup": null,
+    "groupStatus": "Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "AGIsFunni",
+    "displayName": "Plasma",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "ExtinctDracos",
+    "displayName": "ExtinctDracos",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "spell_craft1",
     "displayName": "Deer",
     "mainGroup": {
@@ -1722,6 +1850,15 @@
       "role": "♟ - Thrall of Sanguine - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "MyLadyOfMercy",
+    "displayName": "MyLadyOfMercy",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
     "rank": "Member",
     "attendedEvents": 0
   },
@@ -1786,6 +1923,15 @@
     "attendedEvents": 0
   },
   {
+    "username": "blackmages",
+    "displayName": "blackmages",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "LadyvxDeath",
     "displayName": "Velvet",
     "mainGroup": {
@@ -1840,21 +1986,6 @@
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
       "role": "♟ - Trickster - ♟"
-    },
-    "groupStatus": "Sanguine and Sanguophage",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
-    "username": "Thinkworkz",
-    "displayName": "Patron",
-    "mainGroup": {
-      "name": "Sanguophage",
-      "role": "♝Bloodline HR♝"
-    },
-    "sanguineGroup": {
-      "name": "| Sanguine Bloodline |",
-      "role": "♟ - Conductor - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
