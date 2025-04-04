@@ -4,10 +4,11 @@ module.exports = {
   name: "ready",
   once: true,
   execute(client) {
-    console.log(`Thus begin the life and times of ${client.user.tag}.`);
-    client.user.setActivity({
-      name: "Cavern Crusher",
-      type: ActivityType.Competing,
+    console.log(`Getting ${client.user.tag} online... hold on.`);
+    //set the status of the bot to "Playing Sanguophage" 
+
+    client.user.setActivity("Sanguophage Project", {
+      type: ActivityType.Playing,
     });
 
     const latency = client.ws.ping;
