@@ -6,6 +6,10 @@ const {
   ApplicationCommandType,
   EmbedBuilder,
 } = require("discord.js");
+const {
+  checkWhitelist,
+  handleNotWhitelisted,
+} = require("../../checkwhitelist.js");
 
 module.exports = {
   data: new ContextMenuCommandBuilder()
@@ -13,6 +17,12 @@ module.exports = {
     .setType(ApplicationCommandType.User),
 
   async execute(interaction) {
+    // Check if the user is in the whitelist using checkwhitelist.js
+    const wl = checkWhitelist(interaction.user.id);
+    if (!wl) {
+      handleNotWhitelisted(interaction);
+      return;
+    }
     let hasReplied = false;
 
     try {

@@ -2,12 +2,31 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const fs = require("fs");
 const path = require("path");
 const noblox = require("noblox.js"); // Import Noblox.js for Roblox integration
+const {
+  checkWhitelist,
+  handleNotWhitelisted,
+  checkDatabaseAccess,
+  handleDatabaseAccess,
+} = require("../../checkwhitelist.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("checkall")
     .setDescription("Check all users against the sanguine group."),
   async execute(interaction) {
+    // Check if the user is in the whitelist using checkwhitelist.js
+    const wl = checkWhitelist(interaction.user.id);
+    if (!wl) {
+      handleNotWhitelisted(interaction);
+      return;
+    }
+    if (wl) {
+      const dbAccess = checkDatabaseAccess(interaction.user.id);
+      if (!dbAccess) {
+        handleDatabaseAccess(interaction);
+        return;
+      }
+    }
     await interaction.deferReply({ ephemeral: true }); // Acknowledge command right away
 
     const blacklistedGroups = [

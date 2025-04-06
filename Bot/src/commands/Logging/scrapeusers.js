@@ -6,6 +6,12 @@ const { EmbedBuilder } = require("discord.js");
 const readline = require("readline");
 const { OAuth2Client } = require("google-auth-library");
 const noblox = require("noblox.js"); // Import Noblox.js for Roblox integration
+const {
+  checkWhitelist,
+  handleNotWhitelisted,
+  checkDatabaseAccess,
+  handleDatabaseAccess,
+} = require("../../checkwhitelist.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,6 +24,19 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    // Check if the user is in the whitelist using checkwhitelist.js
+    const wl = checkWhitelist(interaction.user.id);
+    if (!wl) {
+      handleNotWhitelisted(interaction);
+      return;
+    }
+    if (wl) {
+      const dbAccess = checkDatabaseAccess(interaction.user.id);
+      if (!dbAccess) {
+        handleDatabaseAccess(interaction);
+        return;
+      }
+    }
     await interaction.deferReply(); // Defer the reply first!
 
     const link = interaction.options.getString("link");

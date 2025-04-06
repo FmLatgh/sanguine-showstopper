@@ -1,6 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const noblox = require("noblox.js");
 const { EmbedBuilder } = require("discord.js");
+const {
+  checkWhitelist,
+  handleNotWhitelisted,
+  checkDatabaseAccess,
+  handleDatabaseAccess,
+} = require("../../checkwhitelist.js");
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,6 +26,19 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    // Check if the user is in the whitelist using checkwhitelist.js
+    const wl = checkWhitelist(interaction.user.id);
+    if (!wl) {
+      handleNotWhitelisted(interaction);
+      return;
+    }
+    if (wl) {
+      const dbAccess = checkDatabaseAccess(interaction.user.id);
+      if (!dbAccess) {
+        handleDatabaseAccess(interaction);
+        return;
+      }
+    }
     const includeNCOplus = interaction.options.getBoolean("includencoplus");
     await interaction.deferReply({ ephemeral: false });
 

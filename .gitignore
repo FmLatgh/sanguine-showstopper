@@ -3,3 +3,5 @@ Bot/src/credentials2.json
 Bot/src/commands/Logging/token.json
 .env
 Bot/src/whitelist.json
+Bot/src/userdata.json
+

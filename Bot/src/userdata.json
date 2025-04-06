@@ -1990,5 +1990,20 @@
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
     "attendedEvents": 0
+  },
+  {
+    "username": "BIackMages",
+    "displayName": "Banbaleena",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♞Bloodline Bound♞"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Trickster - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
   }
 ]
