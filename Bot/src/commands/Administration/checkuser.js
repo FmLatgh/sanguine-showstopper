@@ -30,7 +30,16 @@ module.exports = {
         content: "Alright... let's see shall we?",
       });
 
-      const userId = await noblox.getIdFromUsername(username);
+      const userId = await noblox.getIdFromUsername(username).catch((err) => {
+        throw new Error(`Could not find user ID for username "${username}".`);
+      });
+
+      if (!userId) {
+        return await interaction.editReply({
+          content: `❌ Error: Could not find user ID for username "${username}".`,
+        });
+      }
+
       const userInfo = await noblox.getPlayerInfo(userId);
       const userGroups = await noblox.getGroups(userId);
 

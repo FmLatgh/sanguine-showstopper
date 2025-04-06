@@ -10,25 +10,40 @@ const {
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName("BG Check")
-    .setType(ApplicationCommandType.User), // Right-click user command
+    .setType(ApplicationCommandType.User),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: false });
-
-    const user = interaction.targetUser;
-    const guildMember = await interaction.guild.members.fetch(user.id);
-    const displayName = guildMember.displayName;
-    console.log("Display Name:", displayName);
-
-    // Extract username before any tags like [☥]
-    const cleanedUsername = displayName
-      .match(/^([^\[\](){}]+)[\[\](){}]?.*$/)?.[1]
-      ?.trim();
+    let hasReplied = false;
 
     try {
-      await interaction.editReply({
-        content: "Checking user...",
-      });
+      // Defer the reply — optional ephemeral flag
+      await interaction.deferReply({ ephemeral: false }); // or { flags: 64 } for ephemeral
+      hasReplied = true;
+
+      // Ensure we're in a guild
+      if (!interaction.guild) {
+        return await interaction.editReply({
+          content: "This command must be used inside a server.",
+        });
+      }
+
+      // Fetch the target member and clean up the display name
+      const user = interaction.targetUser;
+      const guildMember = await interaction.guild.members.fetch(user.id);
+      const displayName = guildMember.displayName;
+      console.log("Display Name:", displayName);
+
+      const cleanedUsername = displayName
+        .match(/^([^\[\](){}]+)[\[\](){}]?.*$/)?.[1]
+        ?.trim();
+
+      if (!cleanedUsername) {
+        return await interaction.editReply({
+          content: "Could not extract a valid username from the display name.",
+        });
+      }
+
+      await interaction.editReply({ content: "Checking user..." });
 
       const userId = await noblox.getIdFromUsername(cleanedUsername);
       const userInfo = await noblox.getPlayerInfo(userId);
@@ -58,7 +73,11 @@ module.exports = {
             value: userData ? "✅ Yes" : "❌ No",
             inline: true,
           },
-          { name: "In Sanguine Group", value: sanguineGroupInfo, inline: true }
+          {
+            name: "In Sanguine Group",
+            value: sanguineGroupInfo,
+            inline: true,
+          }
         )
         .setTimestamp()
         .setFooter({
@@ -66,13 +85,17 @@ module.exports = {
           iconURL: interaction.user.displayAvatarURL(),
         });
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ content: null, embeds: [embed] });
     } catch (error) {
       console.error("Error checking user:", error);
-      await interaction.editReply({
-        content: "An error occurred while checking the user.",
-        ephemeral: true,
-      });
+
+      const errorMsg = "An error occurred while checking the user.";
+
+      if (hasReplied) {
+        await interaction.editReply({ content: errorMsg });
+      } else {
+        await interaction.reply({ content: errorMsg, ephemeral: true });
+      }
     }
   },
 };
