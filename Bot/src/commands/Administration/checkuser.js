@@ -5,7 +5,7 @@ const {
   checkWhitelist,
   handleNotWhitelisted,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("checkuser")
@@ -21,6 +21,7 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "checkuser", "Not Whitelisted", "❌ Failed");
       return;
     }
     await interaction.deferReply({ ephemeral: false });
@@ -113,12 +114,14 @@ module.exports = {
         .setTimestamp();
 
       await interaction.editReply({ content: null, embeds: [embed] });
+      logAction(interaction, interaction.user.id, "checkuser", `Checked user ${username} (${userId})`, "✅ Success");
     } catch (error) {
       console.error(error);
       if (!interaction.replied) {
         await interaction.editReply({
           content: "❌ Error: Could not fetch user info.",
         });
+        logAction(interaction, interaction.user.id, "checkuser", `Error while checking user ${username}: ${error.message}`, "❌ Failed");
       }
     }
   },

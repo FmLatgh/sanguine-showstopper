@@ -8,7 +8,7 @@ const {
   checkDatabaseAccess,
   handleDatabaseAccess,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("checkall")
@@ -18,12 +18,14 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "checkall", "Not Whitelisted", "❌ Failed");
       return;
     }
     if (wl) {
       const dbAccess = checkDatabaseAccess(interaction.user.id);
       if (!dbAccess) {
         handleDatabaseAccess(interaction);
+        logAction(interaction, interaction.user.id, "checkall", "No database access", "❌ Failed");
         return;
       }
     }
@@ -72,6 +74,7 @@ module.exports = {
       await interaction.editReply({
         content: "All users are in the sanguine group.",
       });
+      logAction(interaction, interaction.user.id, "checkall", "All users are in the sanguine group.", "✅ Success");
     }
   },
 };

@@ -10,7 +10,7 @@ const {
   checkWhitelist,
   handleNotWhitelisted,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
 module.exports = {
   data: new ContextMenuCommandBuilder()
     .setName("BG Check")
@@ -21,6 +21,7 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "BG Check", "Not Whitelisted", "❌ Failed");
       return;
     }
     let hasReplied = false;
@@ -32,6 +33,7 @@ module.exports = {
 
       // Ensure we're in a guild
       if (!interaction.guild) {
+        logAction(interaction, interaction.user.id, "BG Check", "Not in Guild", "❌ Failed");
         return await interaction.editReply({
           content: "This command must be used inside a server.",
         });
@@ -48,6 +50,7 @@ module.exports = {
         ?.trim();
 
       if (!cleanedUsername) {
+        logAction(interaction, interaction.user.id, "BG Check", "Invalid Username", "❌ Failed");
         return await interaction.editReply({
           content: "Could not extract a valid username from the display name.",
         });
@@ -96,9 +99,11 @@ module.exports = {
         });
 
       await interaction.editReply({ content: null, embeds: [embed] });
+      logAction(interaction, interaction.user.id, "BG Check", `Checked ${cleanedUsername}`, "✅ Success");
+
     } catch (error) {
       console.error("Error checking user:", error);
-
+      logAction(interaction, interaction.user.id, "BG Check", "Error Occurred", "❌ Failed");
       const errorMsg = "An error occurred while checking the user.";
 
       if (hasReplied) {

@@ -7,7 +7,7 @@ const {
   checkDatabaseAccess,
   handleDatabaseAccess,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -30,6 +30,12 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(
+        interaction.user.id,
+        interaction.commandName,
+        "Not whitelisted",
+        interaction.guildId
+      );
       return;
     }
     if (wl) {
@@ -56,6 +62,12 @@ module.exports = {
       : null;
 
     if (!sanguineGroupId) {
+      logAction(
+        interaction.user.id,
+        interaction.commandName,
+        "Sanguine group ID not configured",
+        interaction.guildId
+      );
       return interaction.editReply("Sanguine group ID is not configured.");
     }
 
@@ -129,9 +141,21 @@ module.exports = {
       }
 
       await interaction.editReply({ embeds: [embed] });
+      logAction(
+        interaction.user.id,
+        interaction.commandName,
+        `Checked ${usersWithBlacklist.length} users`,
+        interaction.guildId
+      );
     } catch (error) {
       console.error(error);
       await interaction.editReply("An error occurred while checking users.");
+      logAction(
+        interaction.user.id,
+        interaction.commandName,
+        `Error: ${error.message}`,
+        interaction.guildId
+      );
     }
   },
 };

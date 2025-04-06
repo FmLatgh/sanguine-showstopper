@@ -12,7 +12,8 @@ const {
   checkDatabaseAccess,
   handleDatabaseAccess,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
+const { log } = require("console");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("scrapeusers")
@@ -28,12 +29,14 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "scrapeusers", "Not Whitelisted", "❌ Failed");
       return;
     }
     if (wl) {
       const dbAccess = checkDatabaseAccess(interaction.user.id);
       if (!dbAccess) {
         handleDatabaseAccess(interaction);
+        logAction(interaction, interaction.user.id, "scrapeusers", "No database access", "❌ Failed");
         return;
       }
     }
@@ -102,6 +105,7 @@ module.exports = {
           }
         }
       }
+      logAction(interaction, interaction.user.id, "scrapeusers", "Rate limited", "❌ Failed");
       throw new Error("Exceeded maximum retries due to rate limiting.");
     }
 
@@ -293,12 +297,14 @@ module.exports = {
 
         // Send the embed with the summary after scraping finishes
         await interaction.followUp({ embeds: [embed] });
+        logAction(interaction, interaction.user.id, "scrapeusers", `Scraped ${totalCount} users.`, "✅ Success");
       } catch (error) {
         console.error("Error scraping users:", error);
         await interaction.editReply({
           content:
             "❌ Failed to scrape users. Please check the link and try again.",
         });
+        logAction(interaction, interaction.user.id, "scrapeusers", "Error scraping users", "❌ Failed");
       }
     }
   },

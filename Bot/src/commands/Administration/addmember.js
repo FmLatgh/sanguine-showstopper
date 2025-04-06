@@ -8,6 +8,7 @@ const {
   checkDatabaseAccess,
   handleDatabaseAccess,
 } = require("../../checkwhitelist.js");
+const { logAction } = require("../../loguseage.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,12 +25,14 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "addmember", "Not Whitelisted", "❌ Failed");
       return;
     }
     if (wl) {
       const dbAccess = checkDatabaseAccess(interaction.user.id);
       if (!dbAccess) {
         handleDatabaseAccess(interaction);
+        logAction(interaction, interaction.user.id, "addmember", "No database access", "❌ Failed");
         return;
       }
     }
@@ -53,6 +56,7 @@ module.exports = {
         content: "User already exists in the database.",
         ephemeral: true,
       });
+      logAction(interaction, interaction.user.id, "addmember", "User already exists in the database.", "❌ Failed");
       return;
     } else {
       // Check if the user is in the sanguine group
@@ -70,6 +74,7 @@ module.exports = {
           content: "User is not in the sanguine group.",
           ephemeral: true,
         });
+        logAction(interaction, interaction.user.id, "addmember", "User is not in the sanguine group.", "❌ Failed");
         return;
       }
 
@@ -83,6 +88,7 @@ module.exports = {
           content: "User is in a blacklisted group.",
           ephemeral: true,
         });
+        logAction(interaction, interaction.user.id, "addmember", `User is in a blacklisted group: ${blacklistedMemberships.map((g) => `${g.Name} (${g.Id})`).join(", ")}`, "❌ Failed");
         return;
       }
 
@@ -121,6 +127,7 @@ module.exports = {
         content: `User ${username} added to the database.`,
         ephemeral: false,
       });
+      logAction(interaction, interaction.user.id, "addmember", `Added ${username} to the database.`, "✅ Success");
     }
   },
 };

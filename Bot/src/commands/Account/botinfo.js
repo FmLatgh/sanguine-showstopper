@@ -5,6 +5,7 @@ const {
   checkWhitelist,
   handleNotWhitelisted,
 } = require("../../checkwhitelist.js");
+const { logAction } = require("../../loguseage.js"); // Import logAction function
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,6 +16,13 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(
+        interaction,
+        interaction.user.id,
+        "botinfo",
+        "User not whitelisted",
+        "Failed"
+      ); // Log the action
       return;
     }
 
@@ -53,5 +61,17 @@ module.exports = {
 
     // Send the embed
     await interaction.editReply({ embeds: [embed] });
+    logAction(
+      interaction,
+      interaction.user.id,
+      "botinfo",
+      "User information retrieved",
+      "User Data: " +
+        JSON.stringify({
+          Username: username,
+          Rank: rank,
+          DatabaseAuthorization: databaseAuthorization,
+        })
+    ); // Log the action
   },
 };

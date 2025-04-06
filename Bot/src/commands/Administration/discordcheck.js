@@ -6,7 +6,8 @@ const {
   checkWhitelist,
   handleNotWhitelisted,
 } = require("../../checkwhitelist.js");
-
+const { logAction } = require("../../loguseage.js");
+const { log } = require("console");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("discordcheck")
@@ -24,6 +25,7 @@ module.exports = {
     const wl = checkWhitelist(interaction.user.id);
     if (!wl) {
       handleNotWhitelisted(interaction);
+      logAction(interaction, interaction.user.id, "discordcheck", "Not Whitelisted", "❌ Failed");
       return;
     }
     await interaction.deferReply({ ephemeral: false });
@@ -62,6 +64,7 @@ module.exports = {
           content: `User not found in the database, therefore not in the  discord.\n\n**Sanguine Group:** ${sanguineGroupInfo}`,
           ephemeral: false,
         });
+        logAction(interaction, interaction.user.id, "discordcheck", `User not found in the database: ${username}`, "❌ Failed");
         return;
       }
     } catch (error) {
@@ -70,6 +73,7 @@ module.exports = {
         content: "An error occurred while checking the user.",
         ephemeral: true,
       });
+      logAction(interaction, interaction.user.id, "discordcheck", `Error checking user: ${error.message}`, "❌ Failed");
     }
   },
 };
