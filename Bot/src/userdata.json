@@ -819,6 +819,21 @@
     "attendedEvents": 0
   },
   {
+    "username": "WolfTonic",
+    "displayName": "Wolfy",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♝Bloodline NCO♝"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Harlequin - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "shrubbyliebe",
     "displayName": "Shrub",
     "mainGroup": {
@@ -1105,7 +1120,7 @@
   },
   {
     "username": "microsawsee",
-    "displayName": "ant",
+    "displayName": "2O25",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
@@ -1316,13 +1331,22 @@
   {
     "username": "GemmenV",
     "displayName": "RetroYanto",
+    "mainGroup": null,
+    "sanguineGroup": null,
+    "groupStatus": "",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
+    "username": "Otveim",
+    "displayName": "Rao DawJack",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Thrall of Sanguine - ♟"
+      "role": "♟ - Trickster - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1374,6 +1398,21 @@
     "attendedEvents": 0
   },
   {
+    "username": "matseb28",
+    "displayName": "matseb28",
+    "mainGroup": {
+      "name": "Sanguophage",
+      "role": "♞Bloodline Bound♞"
+    },
+    "sanguineGroup": {
+      "name": "| Sanguine Bloodline |",
+      "role": "♟ - Jester - ♟"
+    },
+    "groupStatus": "Sanguine and Sanguophage",
+    "rank": "Member",
+    "attendedEvents": 0
+  },
+  {
     "username": "Duneskies",
     "displayName": "Duney",
     "mainGroup": {
@@ -1389,23 +1428,23 @@
     "attendedEvents": 0
   },
   {
-    "username": "CoffinManDan",
-    "displayName": "MortimerCrowe",
+    "username": "CowShat",
+    "displayName": "Goblin",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Harlequin - ♟"
+      "role": "♜ - Strongman - ♜"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
     "attendedEvents": 0
   },
   {
-    "username": "kasulek",
-    "displayName": "kasulek",
+    "username": "CoffinManDan",
+    "displayName": "MortimerCrowe",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
@@ -1442,7 +1481,7 @@
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Harlequin - ♟"
+      "role": "♜ - Strongman - ♜"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1458,21 +1497,6 @@
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
       "role": "♟ - Harlequin - ♟"
-    },
-    "groupStatus": "Sanguine and Sanguophage",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
-    "username": "Ashari_Artxx",
-    "displayName": "diesirae",
-    "mainGroup": {
-      "name": "Sanguophage",
-      "role": "♞Bloodline Bound♞"
-    },
-    "sanguineGroup": {
-      "name": "| Sanguine Bloodline |",
-      "role": "♟ - Jester - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1614,21 +1638,6 @@
     "attendedEvents": 0
   },
   {
-    "username": "specsgirl999",
-    "displayName": "Squesha",
-    "mainGroup": {
-      "name": "Sanguophage",
-      "role": "♞Bloodline Bound♞"
-    },
-    "sanguineGroup": {
-      "name": "| Sanguine Bloodline |",
-      "role": "♟ - Jester - ♟"
-    },
-    "groupStatus": "Sanguine and Sanguophage",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
     "username": "Daydream_Midnight",
     "displayName": "MalloryHalcyon",
     "mainGroup": {
@@ -1735,7 +1744,7 @@
   },
   {
     "username": "Gxotism",
-    "displayName": "Hobzi",
+    "displayName": "RiceMuncherrr",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
@@ -1780,7 +1789,7 @@
   },
   {
     "username": "CHISSSSOLO",
-    "displayName": "Antagonist",
+    "displayName": "BrianMoser",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♟Sycophant♟"
@@ -1832,7 +1841,7 @@
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Thrall of Sanguine - ♟"
+      "role": "♟ - Trickster - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1886,7 +1895,7 @@
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Trickster - ♟"
+      "role": "♟ - Jester - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1908,30 +1917,6 @@
     "attendedEvents": 0
   },
   {
-    "username": "BIackMages",
-    "displayName": "Banbaleena",
-    "mainGroup": {
-      "name": "Sanguophage",
-      "role": "♞Bloodline Bound♞"
-    },
-    "sanguineGroup": {
-      "name": "| Sanguine Bloodline |",
-      "role": "♟ - Trickster - ♟"
-    },
-    "groupStatus": "Sanguine and Sanguophage",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
-    "username": "blackmages",
-    "displayName": "blackmages",
-    "mainGroup": null,
-    "sanguineGroup": null,
-    "groupStatus": "",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
     "username": "LadyvxDeath",
     "displayName": "Velvet",
     "mainGroup": {
@@ -1940,7 +1925,7 @@
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Jester - ♟"
+      "role": "♟ - Harlequin - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1955,7 +1940,7 @@
     },
     "sanguineGroup": {
       "name": "| Sanguine Bloodline |",
-      "role": "♟ - Trickster - ♟"
+      "role": "♟ - Jester - ♟"
     },
     "groupStatus": "Sanguine and Sanguophage",
     "rank": "Member",
@@ -1978,22 +1963,7 @@
   },
   {
     "username": "tulbike99",
-    "displayName": "LLarry",
-    "mainGroup": {
-      "name": "Sanguophage",
-      "role": "♞Bloodline Bound♞"
-    },
-    "sanguineGroup": {
-      "name": "| Sanguine Bloodline |",
-      "role": "♟ - Trickster - ♟"
-    },
-    "groupStatus": "Sanguine and Sanguophage",
-    "rank": "Member",
-    "attendedEvents": 0
-  },
-  {
-    "username": "BIackMages",
-    "displayName": "Banbaleena",
+    "displayName": "LLaurel",
     "mainGroup": {
       "name": "Sanguophage",
       "role": "♞Bloodline Bound♞"
