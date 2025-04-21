@@ -40,7 +40,7 @@ module.exports = {
     const username = userData.name;
     const rank = userData.rank;
     const databaseAuthorization = userData.DatabaseAuthorization === "true";
-    const rankChangesAccess = userData.RankChangesAccess === "true";
+    const rankChangesAccess = userData.RankChangesAuthorization === "true";
 
     // Create the embed message
     const embed = new EmbedBuilder()
@@ -57,7 +57,7 @@ module.exports = {
           inline: true,
         },
         {
-          name: "Rank Changes Access",
+          name: "Rank Changes Authorization",
           value: rankChangesAccess ? "Yes" : "No",
           inline: true,
         }

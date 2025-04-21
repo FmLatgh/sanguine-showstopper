@@ -44,7 +44,31 @@ module.exports = {
       const roles = await noblox.getRoles(groupId);
       const currentRoleIndex = roles.findIndex((r) => r.rank === currentRank);
 
-      if (currentRoleIndex === -1 || currentRoleIndex + 1 >= roles.length) {
+      if (currentRank === 0) {
+        const guestEmbed = new EmbedBuilder()
+          .setColor("Red")
+          .setTitle("User Not in Group")
+          .setDescription(
+            `⚠️ **${username}** is not in the group and cannot be ranked.`
+          )
+          .setTimestamp()
+          .setFooter({ text: "Sanguine" });
+
+        logAction(
+          interaction,
+          discordID,
+          "Change Rank",
+          `Tried to rank **${username}** to **${rankName}**`,
+          "❌ Failed - user not in group"
+        );
+
+        return await interaction.reply({
+          embeds: [guestEmbed],
+          ephemeral: true,
+        });
+      }
+
+      if (currentRoleIndex + 1 >= roles.length) {
         const invalidEmbed = new EmbedBuilder()
           .setColor("Red")
           .setTitle("Promotion Failed")

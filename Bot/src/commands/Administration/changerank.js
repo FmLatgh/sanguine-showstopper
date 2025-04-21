@@ -58,6 +58,30 @@ module.exports = {
     try {
       const userId = await noblox.getIdFromUsername(username);
       const currentRank = await noblox.getRankInGroup(groupId, userId);
+      
+      if (currentRank === 0) {
+        const guestEmbed = new EmbedBuilder()
+          .setColor("Red")
+          .setTitle("User Not in Group")
+          .setDescription(
+            `⚠️ **${username}** is not in the group and cannot be ranked.`
+          )
+          .setTimestamp()
+          .setFooter({ text: "Sanguine" });
+
+        logAction(
+          interaction,
+          discordID,
+          "Change Rank",
+          `Tried to rank **${username}** to **${rankName}**`,
+          "❌ Failed - user not in group"
+        );
+
+        return await interaction.reply({
+          embeds: [guestEmbed],
+          ephemeral: true,
+        });
+      }
 
       if (currentRank === rank) {
         const sameRankEmbed = new EmbedBuilder()
@@ -77,7 +101,10 @@ module.exports = {
           "⚠️ No change: user already had the target rank"
         );
 
-        return await interaction.reply({ embeds: [sameRankEmbed], ephemeral: true });
+        return await interaction.reply({
+          embeds: [sameRankEmbed],
+          ephemeral: true,
+        });
       }
 
       await noblox.setRank(groupId, userId, rank);
@@ -100,7 +127,6 @@ module.exports = {
         .setFooter({ text: "Sanguine" });
 
       await interaction.reply({ embeds: [successEmbed] });
-
     } catch (error) {
       console.error("Failed to set rank:", error);
 
