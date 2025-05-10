@@ -49,6 +49,8 @@ module.exports = {
     let notInSanguine = [];
 
     for (const userData of data) {
+      //if null, skip
+      if (!userData.username) continue;
       const username = userData.username;
       try {
         const userId = await noblox.getIdFromUsername(username);

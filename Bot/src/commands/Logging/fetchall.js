@@ -13,39 +13,25 @@ const noblox = require("noblox.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("fetchall")
-    .setDescription(
-      "Tries to fetch all Roblox accounts from Discord display names of users with a specific role."
-    )
-    .addRoleOption((option) =>
-      option
-        .setName("role")
+    .setDescription("Fetch all Roblox accounts based on users with a specific role.")
+    .addRoleOption(option =>
+      option.setName("role")
         .setDescription("The role to fetch accounts from.")
         .setRequired(true)
     ),
+
   async execute(interaction) {
-    const wl = checkWhitelist(interaction.user.id);
-    if (!wl) {
+    const userId = interaction.user.id;
+
+    if (!checkWhitelist(userId)) {
       handleNotWhitelisted(interaction);
-      logAction(
-        interaction,
-        interaction.user.id,
-        "fetchall",
-        "User not whitelisted",
-        "❌ Failed"
-      );
+      logAction(interaction, userId, "fetchall", "User not whitelisted", "❌ Failed");
       return;
     }
 
-    const db = checkDatabaseAccess(interaction.user.id);
-    if (!db) {
+    if (!checkDatabaseAccess(userId)) {
       handleDatabaseAccess(interaction);
-      logAction(
-        interaction,
-        interaction.user.id,
-        "fetchall",
-        "User not authorized for database access",
-        "❌ Failed"
-      );
+      logAction(interaction, userId, "fetchall", "No DB access", "❌ Failed");
       return;
     }
 
@@ -53,15 +39,25 @@ module.exports = {
 
     const role = interaction.options.getRole("role");
     const guild = interaction.guild;
-    const members = await guild.members.fetch();
 
-    const roleMembers = members.filter((member) =>
-      member.roles.cache.has(role.id)
-    );
+    if (!guild) {
+      await interaction.editReply("❌ Error: Cannot access guild. Make sure bot has the necessary intents.");
+      return;
+    }
 
+    let members;
+    try {
+      members = await guild.members.fetch();
+    } catch (err) {
+      console.error("Error fetching members:", err);
+      await interaction.editReply("❌ Failed to fetch members. Make sure the bot has the **GUILD_MEMBERS** intent enabled.");
+      return;
+    }
+
+    const roleMembers = members.filter(member => member.roles.cache.has(role.id));
     const filePath = path.join(__dirname, "../../../src/userdata.json");
-    let userData = [];
 
+    let userData = [];
     try {
       const fileData = fs.readFileSync(filePath, "utf8");
       userData = JSON.parse(fileData);
@@ -70,28 +66,20 @@ module.exports = {
       userData = [];
     }
 
-    const mainGroupId = process.env.MAINGROUP_ID
-      ? Number(process.env.MAINGROUP_ID)
-      : null;
-    const sanguineGroupId = process.env.SANGUINE_ID
-      ? Number(process.env.SANGUINE_ID)
-      : null;
+    const mainGroupId = process.env.MAINGROUP_ID ? Number(process.env.MAINGROUP_ID) : null;
+    const sanguineGroupId = process.env.SANGUINE_ID ? Number(process.env.SANGUINE_ID) : null;
 
-    let added = 0,
-      already = 0,
-      failed = 0;
+    let added = 0, already = 0, failed = 0;
 
     for (const member of roleMembers.values()) {
       const rawName = member.displayName.trim();
+
       if (!rawName || rawName.length < 3) {
         failed++;
         continue;
       }
 
-      // Check if already in DB
-      const exists = userData.find(
-        (u) => u.username.toLowerCase() === rawName.toLowerCase()
-      );
+      const exists = userData.find(u => u.username.toLowerCase() === rawName.toLowerCase());
       if (exists) {
         already++;
         continue;
@@ -100,41 +88,33 @@ module.exports = {
       try {
         const userId = await noblox.getIdFromUsername(rawName);
         const player = await noblox.getUserInfo(userId);
-        const userGroups = await noblox.getGroups(userId);
+        const groups = await noblox.getGroups(userId);
 
-        const mainGroup = userGroups.find((g) => g.Id === mainGroupId);
-        const sanguineGroup = userGroups.find((g) => g.Id === sanguineGroupId);
+        const mainGroup = groups.find(g => g.Id === mainGroupId);
+        const sanguineGroup = groups.find(g => g.Id === sanguineGroupId);
 
         let groupStatus = "None";
-        if (sanguineGroup && mainGroup)
-          groupStatus = "Sanguine and Sanguophage";
+        if (sanguineGroup && mainGroup) groupStatus = "Sanguine and Sanguophage";
         else if (sanguineGroup) groupStatus = "Sanguine";
         else if (mainGroup) groupStatus = "Sanguophage";
 
         userData.push({
           username: player.name,
           displayName: player.displayName,
-          mainGroup: mainGroup
-            ? { name: mainGroup.Name, role: mainGroup.Role }
-            : null,
-          sanguineGroup: sanguineGroup
-            ? { name: sanguineGroup.Name, role: sanguineGroup.Role }
-            : null,
+          mainGroup: mainGroup ? { name: mainGroup.Name, role: mainGroup.Role } : null,
+          sanguineGroup: sanguineGroup ? { name: sanguineGroup.Name, role: sanguineGroup.Role } : null,
           groupStatus,
           rank: "Member",
-          attendedEvents: 0,
+          attendedEvents: 0
         });
 
         added++;
-        await interaction.editReply(
-          `Progress: ✅ ${added} added | ♻️ ${already} existing | ❌ ${failed} failed`
-        );
       } catch (err) {
-        console.log(`Failed for ${rawName}:`, err.message);
+        console.warn(`❌ Failed for "${rawName}": ${err.message}`);
         failed++;
       }
 
-      await new Promise((res) => setTimeout(res, 500)); // prevent rate limiting
+      await new Promise(res => setTimeout(res, 500)); // cooldown for rate limit
     }
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2));
@@ -143,21 +123,21 @@ module.exports = {
       .setColor("#00b0f4")
       .setTitle("Fetch Summary")
       .addFields(
-        { name: "Added", value: `${added}`, inline: true },
-        { name: "Already in DB", value: `${already}`, inline: true },
-        { name: "Failed", value: `${failed}`, inline: true }
+        { name: "✅ Added", value: `${added}`, inline: true },
+        { name: "♻️ Already in DB", value: `${already}`, inline: true },
+        { name: "❌ Failed", value: `${failed}`, inline: true }
       )
       .setFooter({ text: "Sanguine People" })
       .setTimestamp();
 
-    await interaction.followUp({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
 
     logAction(
       interaction,
-      interaction.user.id,
+      userId,
       "fetchall",
       `Added: ${added}, Existing: ${already}, Failed: ${failed}`,
       "✅ Success"
     );
-  },
+  }
 };

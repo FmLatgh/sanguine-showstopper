@@ -58,3 +58,5 @@ roblox();
 client.login(process.env.TOKEN).catch((err) => {
   console.error("❌ Failed to log into Discord:", err);
 });
+
+console.log("Up and running.");
